@@ -41,8 +41,8 @@ body {
 }
 
 .board-container {
-    width: 38.5vw;
-    height: 75vh;
+    width: 740px;
+    height: 740px;
     position:relative;
     left:50%;
     transform:translateX(-50%);
@@ -64,12 +64,46 @@ body {
 .square {
     width:87.5px;
     height: 87.5px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position:relative;
 }
 
 .square.light {
     background-color: rgba( 255, 255, 255, 0.2);
 }
 
+.square .piece.light {
+    color: #fff;
+}
+
 .square.dark {
     background-color: rgba( 0,0,0, 0.2);
+}
+
+.square .piece.dark {
+    color: #000;
+}
+
+.square .piece {
+    font-size: 65px;
+    cursor: default;
+    user-select: none;
+}
+
+.square.active {
+    background-color:rgba(136, 255, 0, 0.3);
+}
+
+.square .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(136, 255, 0, 0.3);
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+    z-index: 1;
 }
