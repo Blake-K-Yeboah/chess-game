@@ -11,7 +11,7 @@ const Board = () => {
    ];
 
    const pieceIndexes = {
-      pawn: [8, 9, 10, 11, 12, 13, 14, 15],
+      pawn: [8, 9, 10, 11, 12, 13, 14, 15, 48, 49, 50, 51, 52, 53, 54, 55],
       king: [4, 60],
       queen: [3, 59],
       bishop: [2, 5, 61, 58],
@@ -21,15 +21,21 @@ const Board = () => {
 
    const generateBoard = () => {
       for (let i = 0; i < 64; i++) {
-         const color = whiteSquareIndexes.includes(i) ? "light" : "dark";
+         const boardColor = whiteSquareIndexes.includes(i) ? "light" : "dark";
          const piece = findPiece(i);
-         const newSquare = { color: color, piece, id: i };
+         const newSquare = {
+            boardColor: boardColor,
+            piece,
+            id: i,
+            color: i < 16 ? "dark" : i > 47 ? "light" : null,
+            hasMoved: false,
+         };
          setBoard((board) => [...board, newSquare]);
       }
    };
 
    const findPiece = (index) => {
-      let piece = "";
+      let piece = null;
 
       for (const [key, value] of Object.entries(pieceIndexes)) {
          if (value.includes(index)) {
@@ -41,7 +47,11 @@ const Board = () => {
 
    useEffect(() => {
       generateBoard();
+      // eslint-disable-next-line
    }, []);
+
+   const [turn, setTurn] = useState("light");
+   const [activePiece, setActivePiece] = useState("");
 
    return (
       <div className="board">
@@ -49,9 +59,14 @@ const Board = () => {
             ? board.map((square) => {
                  return (
                     <Square
-                       color={square.color}
-                       piece={square.piece}
+                       square={square}
                        key={square.id}
+                       turn={turn}
+                       setTurn={setTurn}
+                       activePiece={activePiece}
+                       setActivePiece={setActivePiece}
+                       board={board}
+                       setBoard={setBoard}
                     />
                  );
               })
