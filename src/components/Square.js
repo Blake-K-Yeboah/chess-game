@@ -67,17 +67,19 @@ const Square = ({
                const diagonalLeftPlaceId = color === "light" ? id - 9 : id + 9;
                const diagonalRightPlaceId = color === "light" ? id - 7 : id + 7;
                let newBoard = [...board];
-               newBoard[firstPlaceId] = {
-                  ...board[firstPlaceId],
-                  piece: "activeLocation",
-               };
-               if (board[diagonalLeftPlaceId].piece !== "") {
+               if (!board[firstPlaceId].piece) {
+                  newBoard[firstPlaceId] = {
+                     ...board[firstPlaceId],
+                     piece: "activeLocation",
+                  };
+               }
+               if (board[diagonalLeftPlaceId].piece) {
                   newBoard[diagonalLeftPlaceId] = {
                      ...board[diagonalLeftPlaceId],
                      isActiveLocation: "true",
                   };
                }
-               if (board[diagonalRightPlaceId].piece !== "") {
+               if (board[diagonalRightPlaceId].piece) {
                   newBoard[diagonalRightPlaceId] = {
                      ...board[diagonalRightPlaceId],
                      isActiveLocation: "true",
@@ -119,6 +121,8 @@ const Square = ({
          board.map((square) => {
             if (square.piece === "activeLocation") {
                return { ...square, piece: " " };
+            } else if (square.isActiveLocation) {
+               return { ...square, isActiveLocation: false };
             } else {
                return square;
             }
