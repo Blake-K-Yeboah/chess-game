@@ -156,6 +156,26 @@ const Square = ({
       } else if (activePiece && color === turn) {
          setActivePiece(square);
          removeActiveLocations();
+      } else if (activePiece && isActiveLocation) {
+         const activePieceIndex = board.indexOf(activePiece);
+         const newBoard = board;
+         newBoard[activePieceIndex] = {
+            ...board[activePieceIndex],
+            color: null,
+            piece: "",
+            id: activePiece.id,
+         };
+         newBoard[id] = {
+            ...activePiece,
+            id,
+            boardColor: board[id].boardColor,
+            hasMoved: true,
+         };
+         setBoard(newBoard);
+         removeActiveLocations();
+         setSquareActive(false);
+         setActivePiece("");
+         setTurn(turn === "light" ? "dark" : "light");
       }
    };
 
