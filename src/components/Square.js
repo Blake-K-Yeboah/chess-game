@@ -92,6 +92,8 @@ const Square = ({
             if (!hasMoved) {
                const firstPlaceId = color === "light" ? id - 15 : id + 15;
                const secondPlaceId = color === "light" ? id - 17 : id + 17;
+               const thirdPlaceId =
+                  id === 62 ? 52 : id === 57 ? 51 : id === 6 ? 12 : 11;
                const newBoard = [...board];
                newBoard[firstPlaceId] = {
                   ...board[firstPlaceId],
@@ -101,6 +103,11 @@ const Square = ({
                   ...board[secondPlaceId],
                   piece: "activeLocation",
                };
+               if (!board[thirdPlaceId].piece)
+                  newBoard[thirdPlaceId] = {
+                     ...board[thirdPlaceId],
+                     piece: "activeLocation",
+                  };
                setBoard(newBoard);
             }
             break;
