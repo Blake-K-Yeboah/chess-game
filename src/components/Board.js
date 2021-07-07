@@ -51,7 +51,7 @@ const Board = () => {
    }, []);
 
    const [turn, setTurn] = useState("light");
-   const [activePiece, setActivePiece] = useState("");
+   const [activePiece, setActivePiece] = useState(null);
 
    return (
       <div className="board">
