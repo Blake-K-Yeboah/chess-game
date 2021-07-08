@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+// Import Piece Move IDS from moves.js
+import { knightIds } from "../moves";
+
 const Square = ({
    square,
    turn,
@@ -49,44 +52,47 @@ const Square = ({
    const markActiveLocations = () => {
       switch (piece) {
          case "pawn":
+            const firstPlaceId = color === "light" ? id - 8 : id + 8;
+            const diagonalLeftPlaceId = color === "light" ? id - 9 : id + 9;
+            const diagonalRightPlaceId = color === "light" ? id - 7 : id + 7;
+            let newBoard = [...board];
+
             if (!hasMoved) {
-               const firstPlaceId = color === "light" ? id - 8 : id + 8;
                const secondPlaceId = color === "light" ? id - 16 : id + 16;
-               let newBoard = [...board];
-               newBoard[firstPlaceId] = {
-                  ...board[firstPlaceId],
-                  piece: "activeLocation",
-               };
                newBoard[secondPlaceId] = {
                   ...board[secondPlaceId],
                   piece: "activeLocation",
                };
-               setBoard(newBoard);
-            } else {
-               const firstPlaceId = color === "light" ? id - 8 : id + 8;
-               const diagonalLeftPlaceId = color === "light" ? id - 9 : id + 9;
-               const diagonalRightPlaceId = color === "light" ? id - 7 : id + 7;
-               let newBoard = [...board];
-               if (!board[firstPlaceId].piece) {
-                  newBoard[firstPlaceId] = {
-                     ...board[firstPlaceId],
-                     piece: "activeLocation",
-                  };
-               }
-               if (board[diagonalLeftPlaceId].piece) {
-                  newBoard[diagonalLeftPlaceId] = {
-                     ...board[diagonalLeftPlaceId],
-                     isActiveLocation: "true",
-                  };
-               }
-               if (board[diagonalRightPlaceId].piece) {
-                  newBoard[diagonalRightPlaceId] = {
-                     ...board[diagonalRightPlaceId],
-                     isActiveLocation: "true",
-                  };
-               }
-               setBoard(newBoard);
             }
+
+            if (!board[firstPlaceId].piece) {
+               newBoard[firstPlaceId] = {
+                  ...board[firstPlaceId],
+                  piece: "activeLocation",
+               };
+            }
+
+            if (
+               board[diagonalLeftPlaceId].piece &&
+               board[diagonalLeftPlaceId].color !== turn
+            ) {
+               newBoard[diagonalLeftPlaceId] = {
+                  ...board[diagonalLeftPlaceId],
+                  isActiveLocation: "true",
+               };
+            }
+
+            if (
+               board[diagonalRightPlaceId].piece &&
+               board[diagonalRightPlaceId].color !== turn
+            ) {
+               newBoard[diagonalRightPlaceId] = {
+                  ...board[diagonalRightPlaceId],
+                  isActiveLocation: "true",
+               };
+            }
+
+            setBoard(newBoard);
             break;
          case "knight":
             if (!hasMoved) {
@@ -94,7 +100,7 @@ const Square = ({
                const secondPlaceId = color === "light" ? id - 17 : id + 17;
                const thirdPlaceId =
                   id === 62 ? 52 : id === 57 ? 51 : id === 6 ? 12 : 11;
-               const newBoard = [...board];
+               let newBoard = [...board];
                newBoard[firstPlaceId] = {
                   ...board[firstPlaceId],
                   piece: "activeLocation",
@@ -103,11 +109,38 @@ const Square = ({
                   ...board[secondPlaceId],
                   piece: "activeLocation",
                };
-               if (!board[thirdPlaceId].piece)
+               if (!board[thirdPlaceId].piece) {
                   newBoard[thirdPlaceId] = {
                      ...board[thirdPlaceId],
                      piece: "activeLocation",
                   };
+               }
+               if (
+                  board[thirdPlaceId].piece &&
+                  board[thirdPlaceId].color !== turn
+               ) {
+                  newBoard[thirdPlaceId] = {
+                     ...board[thirdPlaceId],
+                     isActiveLocation: "true",
+                  };
+               }
+               setBoard(newBoard);
+            } else {
+               let newBoard = [...board];
+               knightIds[id + 1].forEach((place) => {
+                  const placeId = place - 1;
+                  if (board[placeId].piece && board[placeId].color !== turn) {
+                     newBoard[placeId] = {
+                        ...board[placeId],
+                        isActiveLocation: "true",
+                     };
+                  } else if (!board[placeId].piece) {
+                     newBoard[placeId] = {
+                        ...board[placeId],
+                        piece: "activeLocation",
+                     };
+                  }
+               });
                setBoard(newBoard);
             }
             break;
@@ -127,7 +160,7 @@ const Square = ({
       setBoard((board) =>
          board.map((square) => {
             if (square.piece === "activeLocation") {
-               return { ...square, piece: " " };
+               return { ...square, piece: null };
             } else if (square.isActiveLocation) {
                return { ...square, isActiveLocation: false };
             } else {
