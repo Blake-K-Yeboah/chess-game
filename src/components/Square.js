@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Import Piece Move IDS from moves.js
-import { knightIds } from "../moves";
+import { knightIds, diagonalIds } from "../moves";
 
 const Square = ({
    square,
@@ -143,6 +143,32 @@ const Square = ({
                });
                setBoard(newBoard);
             }
+            break;
+         case "bishop":
+            let newestBoard = [...board];
+            Object.values(diagonalIds[id + 1]).forEach((placeIds) => {
+               let blocked = false;
+               let i = 0;
+               while (i < placeIds.length && !blocked) {
+                  const placeId = placeIds[i] - 1;
+                  if (board[placeId].piece) {
+                     if (board[placeId].color !== turn) {
+                        newestBoard[placeId] = {
+                           ...board[placeId],
+                           isActiveLocation: "true",
+                        };
+                     }
+                     blocked = true;
+                  } else {
+                     newestBoard[placeId] = {
+                        ...board[placeId],
+                        piece: "activeLocation",
+                     };
+                  }
+                  i++;
+               }
+            });
+            setBoard(newestBoard);
             break;
          default:
             console.log("hi");
