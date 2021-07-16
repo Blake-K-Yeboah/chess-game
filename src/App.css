@@ -51,7 +51,11 @@ body {
     color: #000;
 }
 
-.player-container.white {
+.player-container.white .pieces {
+    color: #000;
+}
+
+.player-container.white, .player-container.black .pieces {
     color: #fff;
 }
 
