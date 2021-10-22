@@ -10,41 +10,44 @@ import BoardContainer from "./components/BoardContainer";
 import ScoreBox from "./components/ScoreBox";
 
 function App() {
-   const [collectedPieces, setCollectedPieces] = useState({
-      light: [
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-      ],
-      dark: [
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-         "pawn",
-      ],
-   });
-   return (
-      <>
-         <div className="box-grid">
-            <TitleBox />
-            <ScoreBox collectedPieces={collectedPieces} />
-         </div>
-         <BoardContainer />
-      </>
-   );
+    const [collectedPieces, setCollectedPieces] = useState({
+        light: [
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+        ],
+        dark: [
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+            "pawn",
+        ],
+    });
+
+    const [turn, setTurn] = useState("light");
+
+    return (
+        <>
+            <div className="box-grid">
+                <TitleBox turn={turn} />
+                <ScoreBox collectedPieces={collectedPieces} />
+            </div>
+            <BoardContainer turn={turn} setTurn={setTurn} />
+        </>
+    );
 }
 
 export default App;
