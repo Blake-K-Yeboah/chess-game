@@ -1,12 +1,12 @@
 // Components
 import Board from "./Board";
 
-const BoardContainer = () => {
-   return (
-      <div className="board-container">
-         <Board />
-      </div>
-   );
+const BoardContainer = ({ turn, setTurn }) => {
+    return (
+        <div className="board-container">
+            <Board turn={turn} setTurn={setTurn} />
+        </div>
+    );
 };
 
 export default BoardContainer;
